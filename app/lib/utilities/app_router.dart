@@ -1,3 +1,5 @@
+import 'package:app/screens/profile_screen.dart';
+import 'package:app/screens/search_screen.dart';
 import 'package:app/utilities/app_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -7,10 +9,14 @@ class AppRouter {
 
     switch (settings.name) {
       case AppConstants.searchRoute:
-        page = Container();
+        page = SearchScreen();
         break;
       case AppConstants.profileRoute:
-        page = Container();
+        final args = settings.arguments as Map<String, String>;
+
+        page = ProfileScreen(
+          username: args["username"]!,
+        );
         break;
       case AppConstants.repositoryDetailsRoute:
         page = Container();
