@@ -56,7 +56,7 @@ class GithubRepositoryModel {
   final int size;
   final int stargazersCount;
   final int watchersCount;
-  final String language;
+  final String? language;
   final bool hasIssues;
   final bool hasProjects;
   final bool hasDownloads;

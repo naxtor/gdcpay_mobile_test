@@ -10,25 +10,34 @@ import 'package:http/http.dart' as http;
 class AppProvider with ChangeNotifier {
   GithubProfileModel? profile;
   List<GithubRepositoryModel> repositories = [];
+  GithubRepositoryModel? repositoryDetails;
   bool isProfileLoading = false;
   bool isRepositoriesLoading = false;
   bool isDetailsLoading = false;
 
   Future<void> getGithubRepositories(String url) async {
+    log(url);
     try {
       isRepositoriesLoading = true;
       notifyListeners();
 
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Authorization':
+              "Bearer ${utf8.decode(base64.decode(AppConstants.githubToken))}",
+        },
+      );
 
       final json = jsonDecode(response.body);
 
-      if (response.statusCode == 404 && json["message"]) {
+      if ([403, 404].contains(response.statusCode) && json["message"]) {
         throw json["message"];
       }
 
       repositories = List<GithubRepositoryModel>.from((json as List)
           .map((repository) => GithubRepositoryModel.fromJson(repository)));
+      repositories.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     } catch (error) {
       log(error.toString());
       rethrow;
@@ -38,20 +47,27 @@ class AppProvider with ChangeNotifier {
     }
   }
 
-  Future<GithubRepositoryModel> getGithubRepositoryDetails(String url) async {
+  Future<void> getGithubRepositoryDetails(String url) async {
     try {
       isDetailsLoading = true;
+      repositoryDetails = null;
       notifyListeners();
 
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Authorization':
+              "Bearer ${utf8.decode(base64.decode(AppConstants.githubToken))}",
+        },
+      );
 
       final json = jsonDecode(response.body);
 
-      if (response.statusCode == 404 && json["message"]) {
+      if ([403, 404].contains(response.statusCode) && json["message"]) {
         throw json["message"];
       }
 
-      return GithubRepositoryModel.fromJson(json);
+      repositoryDetails = GithubRepositoryModel.fromJson(json);
     } catch (error) {
       log(error.toString());
       rethrow;
@@ -64,23 +80,31 @@ class AppProvider with ChangeNotifier {
   Future<void> getGithubProfile(String username) async {
     try {
       isProfileLoading = true;
+      profile = null;
+      repositories.clear();
       notifyListeners();
 
       final response = await http.get(
         Uri.parse('${AppConstants.githubProfileURL}$username'),
+        headers: {
+          'Authorization':
+              "Bearer ${utf8.decode(base64.decode(AppConstants.githubToken))}",
+        },
       );
 
       final json = jsonDecode(response.body);
+      log("Suk");
 
-      if (response.statusCode == 404 && json["message"]) {
+      if ([403, 404].contains(response.statusCode) && json["message"]) {
         throw json["message"];
       }
 
       profile = GithubProfileModel.fromJson(json);
+      log("Suk sini");
 
-      getGithubProfile(username);
+      getGithubRepositories(profile!.reposUrl);
     } catch (error) {
-      log(error.toString());
+      log("getGithubProfile: ${error.toString()}");
       rethrow;
     } finally {
       isProfileLoading = false;

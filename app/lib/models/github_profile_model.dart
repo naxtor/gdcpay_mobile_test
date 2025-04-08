@@ -18,13 +18,13 @@ class GithubProfileModel {
   final String type;
   final String userViewType;
   final bool siteAdmin;
-  final String name;
+  final String? name;
   final dynamic company;
   final String blog;
   final dynamic location;
   final dynamic email;
   final dynamic hireable;
-  final String bio;
+  final String? bio;
   final dynamic twitterUsername;
   final int publicRepos;
   final int publicGists;

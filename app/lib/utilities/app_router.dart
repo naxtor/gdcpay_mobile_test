@@ -1,4 +1,5 @@
 import 'package:app/screens/profile_screen.dart';
+import 'package:app/screens/repository_details_screen.dart';
 import 'package:app/screens/search_screen.dart';
 import 'package:app/utilities/app_constants.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class AppRouter {
 
     switch (settings.name) {
       case AppConstants.searchRoute:
-        page = SearchScreen();
+        page = const SearchScreen();
         break;
       case AppConstants.profileRoute:
         final args = settings.arguments as Map<String, String>;
@@ -19,7 +20,11 @@ class AppRouter {
         );
         break;
       case AppConstants.repositoryDetailsRoute:
-        page = Container();
+        final args = settings.arguments as Map<String, String>;
+
+        page = RepositoryDetailsScreen(
+          url: args["url"]!,
+        );
         break;
       default:
         page = Container();

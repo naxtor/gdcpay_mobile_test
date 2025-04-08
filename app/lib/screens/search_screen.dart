@@ -47,8 +47,8 @@ class _SearchScreenState extends State<SearchScreen> {
               AppConstants.searchIllustration,
               height: 160,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
               child: Text(
                 "Find your favourite github profile here, start searching !",
                 style: TextStyle(
@@ -79,7 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     hintStyle: const TextStyle(
                       fontSize: 12,
                     ),
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.search,
                       size: 16,
                     ),

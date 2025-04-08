@@ -9,4 +9,8 @@ class AppConstants {
 
   // Asset constants
   static const String searchIllustration = 'assets/search-illustration.png';
+
+  // Github token
+  static const String githubToken =
+      'Z2hwX1dUbzBaTVZLNjI1UHI4aDlTSnlaa3lMbnRwSDJ6SjNqems1Rw==';
 }
