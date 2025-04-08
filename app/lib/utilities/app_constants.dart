@@ -6,4 +6,7 @@ class AppConstants {
 
   // API constants
   static const String githubProfileURL = 'https://api.github.com/users/';
+
+  // Asset constants
+  static const String searchIllustration = 'assets/search-illustration.png';
 }
